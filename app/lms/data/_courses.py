@@ -1,11 +1,12 @@
 from . import Base
 from . import Column, String, Integer
 
-class Groups(Base):
+class Courser(Base):
     __tablename__ = 'courses'
 
-    group_id = Column(Integer, primary_key=True)
-    course_id = Column(String)
+    course_id = Column(Integer, primary_key=True)
     course_name = Column(String)
     description = Column(String)
-    teacher_id = Column(String)
+
+    # def __repr__(self):
+    #     return f'txt={self.txt}, num={self.num}'
