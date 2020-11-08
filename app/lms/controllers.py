@@ -1,4 +1,5 @@
 from lms import app
+from flask import request
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from lms.data import *
@@ -8,70 +9,84 @@ db_string = "postgresql://postgres:example@localhost:5432/postgres"
 engine = create_engine(db_string)
 Session = sessionmaker(bind=engine)
 
-# @app.route('/')
-# def hello_world():
-#     result_set = db.execute("SELECT num_col, text_col FROM TEST")
-#     result = {}
-#     for r in result_set:  
-#         result[r[0]] = r[1]
-#     return json.dumps(result)
 
-
-@app.route('/users')
-def users():
-    session = Session()
-    rows = session.query(Users).all()
-    res = [rw for rw in rows]
-    print(res)
-    session.close()
-    return res
-
-# POST
-@app.route('/auth')
+@app.route('/auth', methods = ['POST'])
 def auth():
-    pass
+    session = Session()
+    user_creds = session.query(Auth).filter(
+        Auth.email == request.form['email'], 
+        Auth.password == request.form['password'])
+    if session.query(user_creds.exists()).scalar():
+        session.close()
+        return 'OK', 200
+    else:
+        session.close()
+        return 'Bad credentials', 400
 
-# POST
-@app.route('/register')
+
+@app.route('/register', methods = ['POST'])
 def register():
-    pass
+    session = Session()
+    session.add(Auth(email = request.form['email'], password = request.form['password']))
+    session.commit()
+    session.close()
+    return 'OK', 200
 
-# GET
-@app.route('/profile')
-def profile():
-    pass
 
-# POST
-@app.route('/profile')
-def profile():
-    pass
 
-# GET
-@app.route('/groups')
-def groups():
-    pass
 
-# GET
-@app.route('/courses')
-def courses():
-    pass
+# # POST
+# @app.route('/auth')
+# def auth():
+#     session = Session()
+#     rows = session.query(Auth).all()
+#     result = {}
+#     for rw in rows:
+#         result[str(rw.user_id)] = f'{rw.email}, {rw.password}'
+#     session.close()
+#     return json.dumps(result), 200
 
-# GET
-@app.route('/course')
-def course():
-    pass
+# # POST
+# @app.route('/register')
+# def register():
+#     pass
 
-# POST
-@app.route('/course')
-def course():
-    pass
+# # GET
+# @app.route('/profile')
+# def profile():
+#     pass
 
-# POST
-@app.route('/homework')
-def homework():
-    pass
+# # POST
+# @app.route('/profile')
+# def profile():
+#     pass
 
-# GET
-@app.route('/homework')
-def homework():
-    pass
+# # GET
+# @app.route('/groups')
+# def groups():
+#     pass
+
+# # GET
+# @app.route('/courses')
+# def courses():
+#     pass
+
+# # GET
+# @app.route('/course')
+# def course():
+#     pass
+
+# # POST
+# @app.route('/course')
+# def course():
+#     pass
+
+# # POST
+# @app.route('/homework')
+# def homework():
+#     pass
+
+# # GET
+# @app.route('/homework')
+# def homework():
+#     pass

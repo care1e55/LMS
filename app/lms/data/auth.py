@@ -1,10 +1,14 @@
-from . import Base
-from . import Column, String, Integer
+from sqlalchemy import Column, Integer, String
+from sqlalchemy.ext.declarative import declarative_base
 
-class Courses(Base):
-    __tablename__ = 'courses'
+Base = declarative_base()
 
-    course_id = Column(Integer, primary_key=True)
-    course_name = Column(String)
-    description = Column(String)
-    materials  = Column(String)
+class Auth(Base):
+    __tablename__ = 'auth'
+
+    user_id = Column(Integer, primary_key=True)
+    email = Column(String)
+    password = Column(String)
+
+    def __repr__(self):
+        return f'user_id={self.user_id}, email={self.email}, password={self.password}'
