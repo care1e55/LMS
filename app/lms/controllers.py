@@ -1,6 +1,7 @@
 from lms import app
 from flask import request
 from sqlalchemy import create_engine
+from sqlalchemy import func, and_, or_, not_
 from sqlalchemy.orm import sessionmaker
 from lms.data import *
 import json
@@ -31,6 +32,38 @@ def register():
     session.commit()
     session.close()
     return 'OK', 200
+
+
+@app.route('/profile', methods = ['GET', 'POST', 'PUT'])
+def profile():
+    session = Session()
+    if request.method == 'GET':
+        q = session.query(UserProfile, Students, Auth) \
+            .join(Students, UserProfile.user_id == Students.user_id) \
+            .join(Auth, UserProfile.user_id == Auth.user_id)
+        result_set = q.all()
+        result = {}
+        for user_profile, students, auth in result_set:
+            result[str(auth.user_id)] = [
+                students.first_name,
+                students.middle_name,
+                students.last_name,
+                auth.email,
+                user_profile.phone_number,
+                user_profile.city,
+                user_profile.about,
+                user_profile.vk_link,
+                user_profile.facebook_link,
+                user_profile.instagram_link,
+                user_profile.education
+            ]
+        return result, 200
+    elif request.method == 'POST':
+        session.add(UserProfile(email = request.form['email'], password = request.form['password']))
+        session.commit()
+        return 'OK', 200
+    session.close()
+
 
 
 

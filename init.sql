@@ -6,7 +6,7 @@ create table auth(
 
 
 create table students(
-	student_id uuid primary key,
+	student_id uuid primary key DEFAULT uuid_generate_v1(),
 	first_name varchar,
 	middle_name varchar,
 	last_name varchar,
@@ -21,7 +21,8 @@ create table students(
 );
 
 
-create table profile(
+create table user_profile(
+	profile_id UUID primary key DEFAULT uuid_generate_v1(),
 	user_id UUID,
 	email varchar,
 	phone_number varchar,
