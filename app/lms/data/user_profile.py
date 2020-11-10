@@ -1,12 +1,13 @@
 from sqlalchemy import Column, Integer, String
 from sqlalchemy.ext.declarative import declarative_base
+import uuid
 
 Base = declarative_base()
 
 class UserProfile(Base):
     __tablename__ = 'user_profile'
 
-    profile_id = Column(String, primary_key=True)
+    profile_id = Column(String, primary_key=True, default=uuid.uuid4)
     user_id = Column(String)
     email = Column(String)
     phone_number = Column(String)

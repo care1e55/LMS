@@ -1,12 +1,13 @@
 from sqlalchemy import Column, Integer, String
 from sqlalchemy.ext.declarative import declarative_base
+import uuid
 
 Base = declarative_base()
 
 class Students(Base):
     __tablename__ = 'students'
 
-    student_id = Column(String, primary_key=True)
+    student_id = Column(String, primary_key=True, default=uuid.uuid4)
     first_name = Column(String)
     middle_name = Column(String)
     last_name = Column(String)

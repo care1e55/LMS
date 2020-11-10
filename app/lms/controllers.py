@@ -34,14 +34,15 @@ def register():
     return 'OK', 200
 
 
-@app.route('/profile', methods = ['GET', 'POST', 'PUT'])
-def profile():
+@app.route('/profile/<user_id>', methods = ['GET', 'POST', 'PUT'])
+def profile(user_id):
     session = Session()
     if request.method == 'GET':
-        q = session.query(UserProfile, Students, Auth) \
+        result_set = session.query(UserProfile, Students, Auth) \
+            .filter(UserProfile.user_id == user_id) \
             .join(Students, UserProfile.user_id == Students.user_id) \
-            .join(Auth, UserProfile.user_id == Auth.user_id)
-        result_set = q.all()
+            .join(Auth, UserProfile.user_id == Auth.user_id) \
+            .all()
         result = {}
         for user_profile, students, auth in result_set:
             result[str(auth.user_id)] = [
@@ -59,10 +60,29 @@ def profile():
             ]
         return result, 200
     elif request.method == 'POST':
-        session.add(UserProfile(email = request.form['email'], password = request.form['password']))
+        session.add(UserProfile(
+            **request.form,
+            user_id = user_id
+            ))
         session.commit()
         return 'OK', 200
     session.close()
+
+
+@app.route('/groups/<user_id>', methods = ['GET'])
+def groups(user_id):
+    session = Session()
+    group_id_result = session.query(Students).filter(Students.user_id == user_id).all()[0].group_id
+    result_set = session.query(Students).filter(Students.group_id == group_id_result).all()
+    result = {}
+    for students in result_set:
+        result[str(students.user_id)] = [
+            students.first_name,
+            students.middle_name,
+            students.last_name
+        ]
+    return result, 200
+
 
 
 
