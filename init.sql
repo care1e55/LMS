@@ -47,24 +47,34 @@ create table teachers(
 );
 
 
-create table courses(
-	course_id uuid primary key,
-	course_name varchar,
+create table groups(
+	group_id varchar primary key,
+	group_name varchar,
 	description varchar);
 
 
-create table running_courses(
-	course_id varchar,
+create table courses(
+	course_id uuid primary key DEFAULT uuid_generate_v1(),
 	course_name varchar,
 	description varchar,
+	group_id varchar,
 	teacher_id varchar,
-	major_id varchar,
-	materials varchar,
-	homeworks varchar);
+	major_id varchar
+);
+
+
+create table materials(
+	material_id uuid primary key DEFAULT uuid_generate_v1(),
+	material_name varchar,
+	material_content varchar,
+--	add_date date,
+	add_date varchar,
+	course_id uuid
+);
 
 
 create table homeworks(
-	homework_id uuid primary key,
+	homework_id uuid primary key DEFAULT uuid_generate_v1(),
 	homeworks_name varchar,
 	homework_start_date varchar,
 	homework_end_date varchar,
@@ -72,14 +82,12 @@ create table homeworks(
 	course_id varchar);
 
 
-create table groups(
-	group_id uuid primary key,
-	group_name varchar,
-	description varchar,
-	-- teacher_id varchar,
-	-- major_id varchar,
-	-- materials varchar,
-	-- homeworks varchar);
+create table solutions(
+	solution_id uuid primary key DEFAULT uuid_generate_v1(),
+	homework_id varchar,
+	student_id varchar,
+	course_id varchar,
+	description varchar);
 
 
 

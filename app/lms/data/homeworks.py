@@ -1,10 +1,13 @@
-from . import Base
-from . import Column, String, Integer
+from sqlalchemy import Column, Integer, String
+from sqlalchemy.ext.declarative import declarative_base
+import uuid
+
+Base = declarative_base()
 
 class Homeworks(Base):
     __tablename__ = 'homeworks'
 
-    homework_id = Column(Integer, primary_key=True)
+    homework_id = Column(String, primary_key=True, default = uuid.uuid4)
     homeworks_name = Column(String)
     homework_start_date = Column(String)
     homework_end_date = Column(String)
