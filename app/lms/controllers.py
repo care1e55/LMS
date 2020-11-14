@@ -3,7 +3,7 @@ from flask import request
 from sqlalchemy import create_engine
 from sqlalchemy import func, and_, or_, not_
 from sqlalchemy.orm import sessionmaker
-from lms.data import *
+from lms.model import *
 import json
 
 db_string = "postgresql://postgres:example@localhost:5432/postgres"
@@ -192,7 +192,16 @@ def post_solution():
 @app.route('/solutions/<course_id>', methods = ['GET'])
 def solutions(course_id):
     session = Session()
-    session.add(Solutions(**request.form))
-    session.commit()
-    return 'OK', 200
+    result_set = session.query(Solutions) \
+        .filter(Solutions.course_id == course_id) \
+        .all()
+    result = {}
+    for solutions in result_set:
+        result[str(solutions.solution_id)] = [
+            solutions.homework_id,
+            solutions.student_id,
+            solutions.course_id,
+            solutions.description
+        ]
     session.close()
+    return result, 200
