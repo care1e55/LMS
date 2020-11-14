@@ -1,4 +1,5 @@
 import json
+import time
 import unittest
 from lms import app
 
@@ -23,8 +24,11 @@ class TestControllers(unittest.TestCase):
         cls.Session = sessionmaker(bind = cls.engine)
 
         with cls.engine.connect() as connection:
-            connection.execute(text(open(cls.initdb_path).read()))
-            connection.execute(text(open(cls.test_data_path).read()))
+            try:
+                connection.execute(text(open(cls.initdb_path).read()))
+                connection.execute(text(open(cls.test_data_path).read()))
+            except:
+                pass
             connection.close()
         
 
@@ -82,5 +86,80 @@ class TestControllers(unittest.TestCase):
                 b'{"00000000-0000-0000-0006-000000000001":["00000000-0000-0000-0005-000000000001","00000000-0000-0000-0001-000000000001","00000000-0000-0000-0004-000000000001","description"]}\n'
             )
 
+    def test_register(self):
+        with app.test_client() as client:
+            post_data = {'email': 'test_user@example.com', 'password': 'test_user'}
+            result = client.post('/register', data = post_data)
+            self.assertEqual(
+                result.data,
+                b'OK'
+            )
 
+    def test_auth(self):
+        with app.test_client() as client:
+            post_data = {'email': 'student1@example.com', 'password': 'student1'}
+            result = client.post('/auth', data = post_data)
+            self.assertEqual(
+                result.data,
+                b'OK'
+            )
+
+    def test_post_profile(self):
+        with app.test_client() as client:
+            post_data = {
+                'email': 'student1@example.com',
+                'phone_number': '+79001112233',
+                'city': 'Moscow',
+                'about': 'myself',
+                'vk_link': 'vklink',
+                'facebook_link': 'facebooklink',
+                'instagram_link': 'insta',
+                }
+            result = client.post('/profile/00000000-0000-0000-0000-000000000001', data = post_data)
+            self.assertEqual(
+                result.data,
+                b'OK'
+            )
+
+    def test_post_material(self):
+        with app.test_client() as client:
+            post_data = {
+                'material_name': 'material2_name', 
+                'material_content': 'material2_name', 
+                'add_date': 'material2_name',  
+                'course_id': '00000000-0000-0000-0004-000000000001', 
+                }
+            result = client.post('/material', data = post_data)
+            self.assertEqual(
+                result.data,
+                b'OK'
+            )
     
+    def test_post_homework(self):
+        with app.test_client() as client:
+            post_data = { 
+                'homeworks_name': 'homework9', 
+                'homework_start_date': '19.12.2020', 
+                'homework_end_date': '26.12.2020', 
+                'description': 'very hard homework', 
+                'course_id': '00000000-0000-0000-0004-000000000001'
+                }
+            result = client.post('/homework', data = post_data)
+            self.assertEqual(
+                result.data,
+                b'OK'
+            )
+
+    def test_post_solution(self):
+        with app.test_client() as client:
+            post_data = { 
+                'homework_id': '00000000-0000-0000-0005-000000000001',
+                'student_id': '00000000-0000-0000-0001-000000000001',
+                'course_id': '00000000-0000-0000-0004-000000000001',
+                'description': 'very good solution'
+                }
+            result = client.post('/solution', data = post_data)
+            self.assertEqual(
+                result.data,
+                b'OK'
+            )

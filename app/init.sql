@@ -1,7 +1,7 @@
 create table if not exists auth(
 	user_id UUID primary key DEFAULT uuid_generate_v1(),
-	email varchar,
-	password varchar
+	email varchar UNIQUE,
+	password varchar UNIQUE
 );
 
 

@@ -152,7 +152,7 @@ def modify_material(material_id):
     session.close()
 
 
-@app.route('/homeworks', methods = ['POST'])
+@app.route('/homework', methods = ['POST'])
 def post_homework():
     session = Session()
     session.add(Homeworks(**request.form))
