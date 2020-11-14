@@ -17,7 +17,6 @@ class UserProfile(Base):
     facebook_link = Column(String)
     linkedin_link = Column(String)
     instagram_link = Column(String)
-    education = Column(String)
 
     def __repr__(self):
         return f'''
@@ -30,5 +29,5 @@ class UserProfile(Base):
             vk_link={self.vk_link},
             facebook_link={self.facebook_link},
             linkedin_link={self.linkedin_link},
-            instagram_link={self.instagram_link},
-            education={self.education}'''
+            instagram_link={self.instagram_link}
+            '''

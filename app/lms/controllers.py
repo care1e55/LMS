@@ -49,14 +49,15 @@ def profile(user_id):
                 students.first_name,
                 students.middle_name,
                 students.last_name,
-                auth.email,
+                user_profile.email,
                 user_profile.phone_number,
                 user_profile.city,
                 user_profile.about,
                 user_profile.vk_link,
                 user_profile.facebook_link,
                 user_profile.instagram_link,
-                user_profile.education
+                students.education_form,
+                students.education_base,
             ]
         return result, 200
     elif request.method == 'POST':
@@ -128,9 +129,7 @@ def course(course_id):
 def post_material():
     session = Session()
     session.add(Materials(
-        **request.form,
-        user_id = user_id
-        ))
+        **request.form))
     session.commit()
     return 'OK', 200
     session.close()
@@ -197,62 +196,3 @@ def solutions(course_id):
     session.commit()
     return 'OK', 200
     session.close()
-
-
-
-
-# # POST
-# @app.route('/auth')
-# def auth():
-#     session = Session()
-#     rows = session.query(Auth).all()
-#     result = {}
-#     for rw in rows:
-#         result[str(rw.user_id)] = f'{rw.email}, {rw.password}'
-#     session.close()
-#     return json.dumps(result), 200
-
-# # POST
-# @app.route('/register')
-# def register():
-#     pass
-
-# # GET
-# @app.route('/profile')
-# def profile():
-#     pass
-
-# # POST
-# @app.route('/profile')
-# def profile():
-#     pass
-
-# # GET
-# @app.route('/groups')
-# def groups():
-#     pass
-
-# # GET
-# @app.route('/courses')
-# def courses():
-#     pass
-
-# # GET
-# @app.route('/course')
-# def course():
-#     pass
-
-# # POST
-# @app.route('/course')
-# def course():
-#     pass
-
-# # POST
-# @app.route('/homework')
-# def homework():
-#     pass
-
-# # GET
-# @app.route('/homework')
-# def homework():
-#     pass
