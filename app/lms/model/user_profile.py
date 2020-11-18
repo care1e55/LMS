@@ -18,6 +18,7 @@ class UserProfile(Base):
     linkedin_link = Column(String)
     instagram_link = Column(String)
 
+
     def __repr__(self):
         return f'''
             profile_id={self.profile_id}, 
@@ -31,3 +32,5 @@ class UserProfile(Base):
             linkedin_link={self.linkedin_link},
             instagram_link={self.instagram_link}
             '''
+
+

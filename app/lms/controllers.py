@@ -11,6 +11,9 @@ engine = create_engine(db_string)
 Session = sessionmaker(bind=engine)
 
 
+# auth as admin, teacher or student
+# TODO: add roles model
+# TODO: add cookie with session id, and session tables
 @app.route('/auth', methods = ['POST'])
 def auth():
     session = Session()
@@ -24,16 +27,23 @@ def auth():
         session.close()
         return 'Bad credentials', 400
 
-
+# register new user
+# TODO: add registration code support
 @app.route('/register', methods = ['POST'])
 def register():
     session = Session()
-    session.add(Auth(email = request.form['email'], password = request.form['password']))
+    session.add(
+        Auth(email = request.form['email'], 
+        password = request.form['password']))
     session.commit()
     session.close()
     return 'OK', 200
 
 
+# profile change
+# TODO: password change support
+# TODO: check phone and links format
+# TODO: add education base visibility support
 @app.route('/profile/<user_id>', methods = ['GET', 'POST', 'PUT'])
 def profile(user_id):
     session = Session()
@@ -70,6 +80,7 @@ def profile(user_id):
     session.close()
 
 
+# users in group
 @app.route('/groups/<user_id>', methods = ['GET'])
 def groups(user_id):
     session = Session()
@@ -90,6 +101,8 @@ def groups(user_id):
     return result, 200
 
 
+# view user courses
+# TODO: teacher/student courses diference
 @app.route('/courses/<user_id>', methods = ['GET'])
 def courses(user_id):
     session = Session()
@@ -108,6 +121,8 @@ def courses(user_id):
     return result, 200
 
 
+# view course info
+# TODO: and major (староста) support 
 @app.route('/course/<course_id>', methods = ['GET'])
 def course(course_id):
     session = Session()
@@ -125,6 +140,7 @@ def course(course_id):
     return result, 200
 
 
+# add material
 @app.route('/material', methods = ['POST'])
 def post_material():
     session = Session()
@@ -135,6 +151,7 @@ def post_material():
     session.close()
 
 
+# modify material
 @app.route('/material/<material_id>', methods = ['PUT', 'DELETE'])
 def modify_material(material_id):
     session = Session()
@@ -152,6 +169,7 @@ def modify_material(material_id):
     session.close()
 
 
+# add new homework to course
 @app.route('/homework', methods = ['POST'])
 def post_homework():
     session = Session()
@@ -161,6 +179,8 @@ def post_homework():
     session.close()
 
 
+# change or delete homework
+# TODO: same
 @app.route('/homeworks/<homework_id>', methods = ['PUT', 'DELETE'])
 def modify_homwork(homework_id):
     session = Session()
@@ -180,6 +200,8 @@ def modify_homwork(homework_id):
     session.close()
 
 
+# TODO: homework task support
+# TODO: add check pass date support
 @app.route('/solution', methods = ['POST'])
 def post_solution():
     session = Session()
@@ -188,7 +210,8 @@ def post_solution():
     return 'OK', 200
     session.close()
 
-
+# view homeworks solutions
+# TODO: add check if student on course support
 @app.route('/solutions/<course_id>', methods = ['GET'])
 def solutions(course_id):
     session = Session()
