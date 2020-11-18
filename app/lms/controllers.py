@@ -27,6 +27,18 @@ def auth():
         session.close()
         return 'Bad credentials', 400
 
+
+@app.route('/password/<user_id>', methods = ['POST'])
+def change_password(user_id):
+    session = Session()
+    user_creds = session.query(Auth) \
+        .filter(Auth.user_id == user_id) \
+        .update({"password" : request.form['password']})
+    session.commit()
+    session.close()
+    return 'OK', 200
+
+
 # register new user
 # TODO: add registration code support
 @app.route('/register', methods = ['POST'])
@@ -41,9 +53,8 @@ def register():
 
 
 # profile change
-# TODO: password change support
-# TODO: check phone and links format
 # TODO: add education base visibility support
+# TODO: PUT
 @app.route('/profile/<user_id>', methods = ['GET', 'POST', 'PUT'])
 def profile(user_id):
     session = Session()
@@ -74,7 +85,7 @@ def profile(user_id):
         session.add(UserProfile(
             **request.form,
             user_id = user_id
-            ))
+            ).validate())
         session.commit()
         return 'OK', 200
     session.close()
