@@ -51,7 +51,7 @@ class TestControllers(unittest.TestCase):
             result = client.get('/profile/00000000-0000-0000-0000-000000000001')
             self.assertEqual(
                 result.data,
-                b'{"00000000-0000-0000-0000-000000000001":["student1_first_name","student1_middle_name","student1_last_name","student1@example.com","+7-900-111-22-33","Moscow","","vk.com/exmaple","facebook.com/exmaple","instagram.com/exmaple","day","free"]}\n'
+                b'{"00000000-0000-0000-0000-000000000001":["student1_first_name","student1_middle_name","student1_last_name","student1@example.com","+7-900-111-22-33","Moscow","","vk.com/exmaple","facebook.com/exmaple","instagram.com/exmaple","day"]}\n'
             )
 
     def test_get_group(self):
@@ -111,10 +111,10 @@ class TestControllers(unittest.TestCase):
                 'phone_number': '+79001112233',
                 'city': 'Moscow',
                 'about': 'myself',
-                'vk_link': 'vklink',
-                'facebook_link': 'facebooklink',
-                'instagram_link': 'insta',
-                }
+                'vk_link': 'https://vk.com/kek',
+                'facebook_link': 'https://facebook.com/hh',
+                'instagram_link': 'https://instagram.com/hh',
+            }
             result = client.post('/profile/00000000-0000-0000-0000-000000000001', data = post_data)
             self.assertEqual(
                 result.data,

@@ -1,5 +1,5 @@
 from lms import app
-from flask import request
+from flask import request, make_response, render_template, url_for, redirect
 from sqlalchemy import create_engine
 from sqlalchemy import func, and_, or_, not_
 from sqlalchemy.orm import sessionmaker
@@ -21,8 +21,10 @@ def auth():
         Auth.email == request.form['email'], 
         Auth.password == request.form['password'])
     if session.query(user_creds.exists()).scalar():
+        response = make_response("OK")
+        response.set_cookie('current_user_id', str(user_creds.all()[0].user_id))
         session.close()
-        return 'OK', 200
+        return response, 200
     else:
         session.close()
         return 'Bad credentials', 400
@@ -65,6 +67,24 @@ def profile(user_id):
             .join(Auth, UserProfile.user_id == Auth.user_id) \
             .all()
         result = {}
+        # print(result_set)
+        # if request.cookies.get('current_user_id') == str(result_set['auth'].user_id):
+        #     for user_profile, students, auth in result_set:
+        #         result[str(auth.user_id)] = [
+        #             students.first_name,
+        #             students.middle_name,
+        #             students.last_name,
+        #             user_profile.email,
+        #             user_profile.phone_number,
+        #             user_profile.city,
+        #             user_profile.about,
+        #             user_profile.vk_link,
+        #             user_profile.facebook_link,
+        #             user_profile.instagram_link,
+        #             students.education_form,
+        #             students.education_base,
+        #         ]
+        # else:
         for user_profile, students, auth in result_set:
             result[str(auth.user_id)] = [
                 students.first_name,
@@ -77,8 +97,7 @@ def profile(user_id):
                 user_profile.vk_link,
                 user_profile.facebook_link,
                 user_profile.instagram_link,
-                students.education_form,
-                students.education_base,
+                students.education_form
             ]
         return result, 200
     elif request.method == 'POST':
@@ -91,7 +110,15 @@ def profile(user_id):
     session.close()
 
 
+# # view self profile
+# @app.route('/profile', methods = ['GET', 'POST', 'PUT'])
+# def profile(user_id):
+#     cur_user_id = request.cookies.get('cur_user_id')
+#     return make_response(redirect(f"/profile/<{cur_user_id}>")), 200
+
+
 # users in group
+# TODO: self group by user_id?
 @app.route('/groups/<user_id>', methods = ['GET'])
 def groups(user_id):
     session = Session()
@@ -220,6 +247,7 @@ def post_solution():
     session.commit()
     return 'OK', 200
     session.close()
+
 
 # view homeworks solutions
 # TODO: add check if student on course support

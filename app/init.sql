@@ -1,3 +1,5 @@
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+
 create table if not exists auth(
 	user_id UUID primary key DEFAULT uuid_generate_v1(),
 	email varchar UNIQUE,
