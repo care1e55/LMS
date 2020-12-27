@@ -7,7 +7,7 @@ before_script:
   - docker-compose up -d --build
 
 script:
-  - docker-compose exec python unittest --discover controllers_test
+  - docker-compose exec python -m unittest tests/controllers_test.py
 
 after_script:
   - docker-compose down
