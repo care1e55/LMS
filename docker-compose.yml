@@ -19,3 +19,4 @@ services:
     ports:
       - "5000:5000"
     network_mode: host
+    container_name: lms-app

@@ -12,7 +12,7 @@ before_script:
   - docker-compose up -d --build
 
 script:
-  - docker-compose exec app python -m unittest tests/controllers_test.py
+  - docker-compose exec app python -m unittest -v tests/controllers_test.py
 
 after_script:
   - docker-compose down
