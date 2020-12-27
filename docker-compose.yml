@@ -1,0 +1,21 @@
+version: "3"
+services:
+  lms-db:
+    build: 
+      context: postgres/
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: example
+    ports:
+      - "5432:5432"
+    container_name: lms-db
+  app:
+    build: 
+      context: app/
+    depends_on:
+      - lms-db
+    environment:
+      POSTGRES_PASSWORD: example
+    ports:
+      - "5000:5000"
+    network_mode: host
