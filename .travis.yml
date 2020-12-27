@@ -1,0 +1,14 @@
+sudo: required
+
+services:
+  - docker
+
+before_script:
+  - docker-compose up -d --build
+
+script:
+  - docker-compose exec python unittest --discover controllers_test
+
+after_script:
+  - docker-compose down
+
