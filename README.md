@@ -1,4 +1,8 @@
 # LMS
+[![Build Status](https://travis-ci.org/care1e55/LMS.svg?branch=cov_and_lint)](https://travis-ci.org/care1e55/LMS)
+[![codecov](https://codecov.io/gh/care1e55/LMS/branch/cov_and_lint/graph/badge.svg)](https://codecov.io/gh/care1e55/LMS)
+
+
 Проект с сервисом LMS по [заданию](https://gist.github.com/Invizory/c02fdadfbe4a33f00b10b50b20142587)
 
 REST API реализовано на flask. В качестве ORM выбрано SQL Alchemy.
