@@ -1,4 +1,5 @@
 # LMS
+[![Build Status](https://travis-ci.org/care1e55/LMS.svg?branch=cov_and_lint)](https://travis-ci.org/care1e55/LMS)
 [![codecov](https://codecov.io/gh/care1e55/LMS/branch/cov_and_lint/graph/badge.svg)](https://codecov.io/gh/care1e55/LMS)
 
 
