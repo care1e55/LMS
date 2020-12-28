@@ -19,7 +19,7 @@ before_script:
   - docker-compose up -d --build
 
 script:
-  - coverage run -m unittest discover -v
+  - cd app && coverage run -m unittest discover -v
 
 after_script:
   - docker-compose down
