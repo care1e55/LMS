@@ -1,0 +1,19 @@
+sudo: required
+
+services:
+  - docker
+
+before_install:
+  - echo 'DOCKER_OPTS="$DOCKER_OPTS --registry-mirror=https://mirror.gcr.io"'
+  - sudo service docker restart
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+
+before_script:
+  - docker-compose up -d --build
+
+script:
+  - docker-compose exec app python -m unittest -v tests/controllers_test.py
+
+after_script:
+  - docker-compose down
+
