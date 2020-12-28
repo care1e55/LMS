@@ -16,7 +16,7 @@ class TestControllers(unittest.TestCase):
         
     @classmethod
     def setUpClass(cls):
-        cls.db_string = "postgresql://postgres:example@127.0.0.1:5432/postgres"
+        cls.db_string = "postgresql://postgres:example@localhost:5432/postgres"
         cls.initdb_path = '/home/care1e55/study/MIPT/architecture/LMS/app/init.sql'
         cls.test_data_path = '/home/care1e55/study/MIPT/architecture/LMS/app/fill_test_data.sql'
         cls.clean_data_path = '/home/care1e55/study/MIPT/architecture/LMS/app/clean_test_data.sql'
