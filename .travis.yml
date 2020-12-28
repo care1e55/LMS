@@ -26,7 +26,7 @@ before_script:
 script:
   - sleep 10
   - cd app && coverage run -m unittest discover -v
-  - pylint app
+  - pylint lms
 
 after_script:
   - docker-compose down
