@@ -1,5 +1,9 @@
 sudo: required
 
+language: python
+python:
+  - 3.6
+
 services:
   - docker
 
@@ -8,11 +12,14 @@ before_install:
   - sudo service docker restart
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
 
+install:
+  - pip install codecov
+
 before_script:
   - docker-compose up -d --build
 
 script:
-  - docker-compose exec app python -m unittest -v tests/controllers_test.py
+  - codecov -m unittest discover -v
 
 after_script:
   - docker-compose down
