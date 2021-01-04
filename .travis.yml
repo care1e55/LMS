@@ -1,6 +1,9 @@
 sudo: required
 
-language: python
+addons:
+   ssh_known_hosts: {SERVICE_HOST}
+
+   language: python
 python:
   - 3.6
 
@@ -27,6 +30,7 @@ script:
   - sleep 10
   - cd app && coverage run -m unittest discover -v
   - pylint lms || exit 0
+  - echo "$SERVICE_PASSWORD" | ssh {SERVICE_LOGIN}@{SERVICE_HOST} cd LMS && ls 
 
 after_script:
   - docker-compose down

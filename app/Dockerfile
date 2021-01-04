@@ -7,4 +7,5 @@ COPY . /usr/local/app
 WORKDIR /usr/local/app
 RUN chmod -R 777 /usr/local/app
 ENV FLASK_APP=lms
-ENTRYPOINT flask run
+EXPOSE 5000
+ENTRYPOINT flask run -h "0.0.0.0" -p 5000
