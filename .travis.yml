@@ -1,7 +1,7 @@
 sudo: required
 
 addons:
-  ssh_known_hosts: $SERVICE_HOST
+  ssh_known_hosts: 188.166.116.10
   apt:
     packages:
       - sshpass
