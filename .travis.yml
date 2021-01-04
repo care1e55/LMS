@@ -34,9 +34,9 @@ script:
   - cd app && coverage run -m unittest discover -v
   - sshpass -p "$SERVICE_PASSWORD" scp docker-compose.yml $SERVICE_LOGIN@$SERVICE_HOST:/root/LMS/
   - sshpass -p "$SERVICE_PASSWORD" ssh $SERVICE_LOGIN@$SERVICE_HOST cd LMS && docker-compose pull && docker-compose up -d 
-  - pylint lms || 0
 
 after_script:
   - docker-compose down
   - bash <(curl -s https://codecov.io/bash)
+  - pylint lms || exit 0
 
