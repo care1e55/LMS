@@ -1,4 +1,4 @@
 from flask import Flask
 app = Flask(__name__)
 
-import lms.controllers
+from lms.controllers import profile, materials, auth, groups, homeworks, solutions, courses
