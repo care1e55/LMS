@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String
+from sqlalchemy import Column, String
 from sqlalchemy.ext.declarative import declarative_base
 import uuid
 
@@ -18,10 +18,8 @@ class Students(Base):
     education_base = Column(String)
     user_id = Column(String)
 
-
     def __repr__(self):
-        return f'''
-            student_id={self.student_id}, 
+        return f'''student_id={self.student_id}, 
             first_name={self.first_name}, 
             middle_name={self.middle_name}, 
             last_name={self.last_name},
@@ -30,4 +28,5 @@ class Students(Base):
             major={self.major},
             education_form={self.education_form},
             education_base={self.education_base},
-            user_id={self.user_id}'''    
+            user_id={self.user_id}'''  
+  

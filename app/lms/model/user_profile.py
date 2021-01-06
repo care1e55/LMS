@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String
+from sqlalchemy import Column, String
 from sqlalchemy.ext.declarative import declarative_base
 import uuid
 import re
@@ -63,5 +63,3 @@ class UserProfile(Base):
             return self
         else:
             raise Exception("instagram link format violation")
-
-

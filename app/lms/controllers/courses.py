@@ -1,6 +1,6 @@
-from flask import Blueprint, request, make_response, render_template, url_for, redirect
-from lms.model import *
-import json
+from flask import Blueprint
+from lms.model.students import Students
+from lms.model.courses import Courses
 
 from . import Session
 

@@ -1,45 +1,24 @@
-import json
-import time
 import unittest
 from lms import app
 import os
 
-from sqlalchemy import create_engine, text
-from sqlalchemy import func, and_, or_, not_
+from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from lms.model import *
-
 
 app.testing = True
-
 
 class TestControllers(unittest.TestCase):
         
     @classmethod
     def setUpClass(cls):
-
         host = os.environ['POSTGRES_HOST']
         port = os.environ['POSTGRES_PORT']
         password = os.environ['POSTGRES_PASSWORD']
         schema = os.environ['POSTGRES_SCHEMA']
-
         cls.db_string = f'postgresql://{schema}:{password}@{host}:{port}/{schema}'
-
-        # cls.initdb_path = '/home/care1e55/study/MIPT/architecture/LMS/app/init.sql'
-        # cls.test_data_path = '/home/care1e55/study/MIPT/architecture/LMS/app/fill_test_data.sql'
-        # cls.clean_data_path = '/home/care1e55/study/MIPT/architecture/LMS/app/clean_test_data.sql'
         cls.engine = create_engine(cls.db_string).execution_options(isolation_level="AUTOCOMMIT")
         cls.Session = sessionmaker(bind = cls.engine)
-
-        # with cls.engine.connect() as connection:
-        #     try:
-        #         connection.execute(text(open(cls.initdb_path).read()))
-        #         connection.execute(text(open(cls.test_data_path).read()))
-        #     except:
-        #         pass
-        #     connection.close()
         
-
     @classmethod
     def tearDownClass(cls):
         # TODO: fix hang ?

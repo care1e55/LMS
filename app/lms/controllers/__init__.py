@@ -1,8 +1,5 @@
 from sqlalchemy import create_engine
-from sqlalchemy import func, and_, or_, not_
 from sqlalchemy.orm import sessionmaker
-from lms.model import *
-import json
 import os
 
 host = os.environ['POSTGRES_HOST']

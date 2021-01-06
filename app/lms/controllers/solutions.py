@@ -1,6 +1,5 @@
-from flask import Blueprint, request, make_response, render_template, url_for, redirect
-from lms.model import Solutions
-import json
+from flask import Blueprint, request
+from lms.model.solutions import Solutions
 
 from . import Session
 
@@ -13,8 +12,8 @@ def post_solution():
     session = Session()
     session.add(Solutions(**request.form))
     session.commit()
-    return 'OK', 200
     session.close()
+    return 'OK', 200
 
 # view homeworks solutions
 # TODO: add check if student on course support

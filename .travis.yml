@@ -42,4 +42,3 @@ after_script:
   - docker-compose down
   - bash <(curl -s https://codecov.io/bash)
   - cd app && pylint lms || exit 0
-
