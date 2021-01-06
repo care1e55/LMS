@@ -1,6 +1,5 @@
-from flask import Blueprint, request, make_response, render_template, url_for, redirect
-from lms.model import *
-import json
+from flask import Blueprint, request
+from lms.model import Homeworks
 
 from . import Session
 
@@ -32,5 +31,5 @@ def modify_homwork(homework_id):
             .filter(Homeworks.homework_id == homework_id) \
             .delete()
         session.commit()
-    return 'OK', 200
     session.close()
+    return 'OK', 200

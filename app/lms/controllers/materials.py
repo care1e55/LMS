@@ -1,6 +1,5 @@
-from flask import Blueprint, request, make_response, render_template, url_for, redirect
-from lms.model import *
-import json
+from flask import Blueprint, request
+from lms.model import Materials
 
 from . import Session
 
@@ -13,8 +12,8 @@ def post_material():
     session.add(Materials(
         **request.form))
     session.commit()
-    return 'OK', 200
     session.close()
+    return 'OK', 200
 
 # modify material
 @material_api.route('/material/<material_id>', methods = ['PUT', 'DELETE'])
@@ -30,5 +29,5 @@ def modify_material(material_id):
     elif request.method == 'DELETE':
         session.query(Materials).filter(Materials.material_id == material_id).delete()
         session.commit()
-    return 'OK', 200
     session.close()
+    return 'OK', 200

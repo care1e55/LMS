@@ -1,10 +1,10 @@
-from flask import Blueprint, request, make_response, render_template, url_for, redirect
+from flask import Blueprint, request
 from lms.model import UserProfile, Students, Auth
-import json
 
 from . import Session
 
 profile_api = Blueprint('profile_api', __name__)
+
 # profile change
 # TODO: add education base visibility support
 # TODO: PUT
@@ -18,6 +18,7 @@ def profile(user_id):
             .join(Auth, UserProfile.user_id == Auth.user_id) \
             .all()
         result = {}
+        # TODO: fix
         # print(result_set)
         # if request.cookies.get('current_user_id') == str(result_set['auth'].user_id):
         #     for user_profile, students, auth in result_set:
@@ -50,6 +51,7 @@ def profile(user_id):
                 user_profile.instagram_link,
                 students.education_form
             ]
+        session.close()
         return result, 200
     elif request.method == 'POST':
         session.add(UserProfile(
@@ -57,10 +59,10 @@ def profile(user_id):
             user_id = user_id
             ).validate())
         session.commit()
+        session.close()
         return 'OK', 200
-    session.close()
 
-
+# TODO: fix
 # # view self profile
 # @profile_api.route('/profile', methods = ['GET', 'POST', 'PUT'])
 # def profile(user_id):
