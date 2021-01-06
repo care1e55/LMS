@@ -1,5 +1,5 @@
 from flask import Blueprint, request, make_response
-from lms.model import *
+from lms.model.auth import Auth 
 
 from . import Session
 

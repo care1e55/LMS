@@ -1,5 +1,5 @@
 from flask import Blueprint, request
-from lms.model import *
+from lms.model.homeworks import Homeworks
 
 from . import Session
 

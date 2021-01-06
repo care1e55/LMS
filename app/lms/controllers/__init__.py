@@ -1,6 +1,5 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from lms.model import *
 import os
 
 host = os.environ['POSTGRES_HOST']

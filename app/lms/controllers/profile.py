@@ -1,5 +1,7 @@
 from flask import Blueprint, request
-from lms.model import *
+from lms.model.user_profile import UserProfile
+from lms.model.students import Students 
+from lms.model.auth import Auth
 
 from . import Session
 
