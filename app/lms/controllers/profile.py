@@ -1,10 +1,14 @@
-from . import *
-from .. import app
+from flask import Blueprint, request, make_response, render_template, url_for, redirect
+from lms.model import UserProfile, Students, Auth
+import json
 
+from . import Session
+
+profile_api = Blueprint('profile_api', __name__)
 # profile change
 # TODO: add education base visibility support
 # TODO: PUT
-@app.route('/profile/<user_id>', methods = ['GET', 'POST', 'PUT'])
+@profile_api.route('/profile/<user_id>', methods = ['GET', 'POST', 'PUT'])
 def profile(user_id):
     session = Session()
     if request.method == 'GET':
@@ -58,7 +62,7 @@ def profile(user_id):
 
 
 # # view self profile
-# @app.route('/profile', methods = ['GET', 'POST', 'PUT'])
+# @profile_api.route('/profile', methods = ['GET', 'POST', 'PUT'])
 # def profile(user_id):
 #     cur_user_id = request.cookies.get('cur_user_id')
 #     return make_response(redirect(f"/profile/<{cur_user_id}>")), 200

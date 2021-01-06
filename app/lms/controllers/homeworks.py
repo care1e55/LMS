@@ -1,7 +1,13 @@
-from . import *
+from flask import Blueprint, request, make_response, render_template, url_for, redirect
+from lms.model import *
+import json
+
+from . import Session
+
+homework_api = Blueprint('homework_api', __name__)
 
 # add new homework to course
-@app.route('/homework', methods = ['POST'])
+@homework_api.route('/homework', methods = ['POST'])
 def post_homework():
     session = Session()
     session.add(Homeworks(**request.form))
@@ -11,7 +17,7 @@ def post_homework():
 
 # change or delete homework
 # TODO: same
-@app.route('/homeworks/<homework_id>', methods = ['PUT', 'DELETE'])
+@homework_api.route('/homeworks/<homework_id>', methods = ['PUT', 'DELETE'])
 def modify_homwork(homework_id):
     session = Session()
     if request.method == 'PUT':

@@ -1,8 +1,14 @@
-from . import *
+from flask import Blueprint, request, make_response, render_template, url_for, redirect
+from lms.model import *
+import json
+
+from . import Session
+
+courses_api = Blueprint('courses_api', __name__)
 
 # view user courses
 # TODO: teacher/student courses diference
-@app.route('/courses/<user_id>', methods = ['GET'])
+@courses_api.route('/courses/<user_id>', methods = ['GET'])
 def courses(user_id):
     session = Session()
     group_id_result = session.query(Students) \
@@ -21,7 +27,7 @@ def courses(user_id):
 
 # view course info
 # TODO: and major (староста) support 
-@app.route('/course/<course_id>', methods = ['GET'])
+@courses_api.route('/course/<course_id>', methods = ['GET'])
 def course(course_id):
     session = Session()
     result_set = session.query(Courses) \

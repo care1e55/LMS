@@ -1,9 +1,15 @@
-from . import *
+from flask import Blueprint, request, make_response, render_template, url_for, redirect
+from lms.model import *
+import json
+
+from . import Session
+
+auth_api = Blueprint('auth_api', __name__)
 
 # auth as admin, teacher or student
 # TODO: add roles model
 # TODO: add cookie with session id, and session tables
-@app.route('/auth', methods = ['POST'])
+@auth_api.route('/auth', methods = ['POST'])
 def auth():
     session = Session()
     user_creds = session.query(Auth).filter(
@@ -18,7 +24,7 @@ def auth():
         session.close()
         return 'Bad credentials', 400
 
-@app.route('/password/<user_id>', methods = ['POST'])
+@auth_api.route('/password/<user_id>', methods = ['POST'])
 def change_password(user_id):
     session = Session()
     user_creds = session.query(Auth) \
@@ -30,7 +36,7 @@ def change_password(user_id):
 
 # register new user
 # TODO: add registration code support
-@app.route('/register', methods = ['POST'])
+@auth_api.route('/register', methods = ['POST'])
 def register():
     session = Session()
     session.add(

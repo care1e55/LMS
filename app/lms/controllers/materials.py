@@ -1,7 +1,13 @@
-from . import *
+from flask import Blueprint, request, make_response, render_template, url_for, redirect
+from lms.model import *
+import json
+
+from . import Session
+
+material_api = Blueprint('material_api', __name__)
 
 # add material
-@app.route('/material', methods = ['POST'])
+@material_api.route('/material', methods = ['POST'])
 def post_material():
     session = Session()
     session.add(Materials(
@@ -11,7 +17,7 @@ def post_material():
     session.close()
 
 # modify material
-@app.route('/material/<material_id>', methods = ['PUT', 'DELETE'])
+@material_api.route('/material/<material_id>', methods = ['PUT', 'DELETE'])
 def modify_material(material_id):
     session = Session()
     if request.method == 'PUT':

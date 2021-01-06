@@ -1,9 +1,14 @@
-from . import *
-from .. import app
+from flask import Blueprint, request, make_response, render_template, url_for, redirect
+from lms.model import Solutions
+import json
+
+from . import Session
+
+solution_api = Blueprint('solution_api', __name__)
 
 # TODO: homework task support
 # TODO: add check pass date support
-@app.route('/solution', methods = ['POST'])
+@solution_api.route('/solution', methods = ['POST'])
 def post_solution():
     session = Session()
     session.add(Solutions(**request.form))
@@ -13,7 +18,7 @@ def post_solution():
 
 # view homeworks solutions
 # TODO: add check if student on course support
-@app.route('/solutions/<course_id>', methods = ['GET'])
+@solution_api.route('/solutions/<course_id>', methods = ['GET'])
 def solutions(course_id):
     session = Session()
     result_set = session.query(Solutions) \

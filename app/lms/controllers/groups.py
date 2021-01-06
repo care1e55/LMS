@@ -1,8 +1,14 @@
-from . import *
+from flask import Blueprint, request, make_response, render_template, url_for, redirect
+from lms.model import *
+import json
+
+from . import Session
+
+groups_api = Blueprint('groups_api', __name__)
 
 # users in group
 # TODO: self group by user_id?
-@app.route('/groups/<user_id>', methods = ['GET'])
+@groups_api.route('/groups/<user_id>', methods = ['GET'])
 def groups(user_id):
     session = Session()
     group_id_result = session.query(Students) \

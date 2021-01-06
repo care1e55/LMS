@@ -1,12 +1,9 @@
-from flask import request, make_response, render_template, url_for, redirect
 from sqlalchemy import create_engine
 from sqlalchemy import func, and_, or_, not_
 from sqlalchemy.orm import sessionmaker
 from lms.model import *
 import json
 import os
-
-from .. import app
 
 host = os.environ['POSTGRES_HOST']
 port = os.environ['POSTGRES_PORT']
