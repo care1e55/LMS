@@ -27,7 +27,8 @@ install:
 
 
 before_script:
-  - docker-compose up -d --build --build-arg POSTGRES_PASSWORD="$POSTGRES_PASSWORD"
+  - docker-compose build --build-arg POSTGRES_PASSWORD="$POSTGRES_PASSWORD"
+  - docker-compose up -d
 
 script:
   - sleep 10
