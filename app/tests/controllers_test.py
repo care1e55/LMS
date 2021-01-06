@@ -23,7 +23,7 @@ class TestControllers(unittest.TestCase):
         password = os.environ['POSTGRES_PASSWORD']
         schema = os.environ['POSTGRES_SCHEMA']
 
-        cls.db_string = f'potgresql://{schema}:{password}@{host}:{port}/{schema}'
+        cls.db_string = f'postgresql://{schema}:{password}@{host}:{port}/{schema}'
 
         # cls.initdb_path = '/home/care1e55/study/MIPT/architecture/LMS/app/init.sql'
         # cls.test_data_path = '/home/care1e55/study/MIPT/architecture/LMS/app/fill_test_data.sql'
