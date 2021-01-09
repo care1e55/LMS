@@ -1,10 +1,16 @@
 from flask import Blueprint
 from lms.model.students import Students
 from lms.model.courses import Courses
+import logging
 
 from . import Session
 
 courses_api = Blueprint('courses_api', __name__)
+logging.basicConfig(
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+    level=logging.INFO)
+logger = logging.getLogger(__name__)
+
 
 # view user courses
 # TODO: teacher/student courses diference
@@ -23,6 +29,7 @@ def courses(user_id):
             courses.description
         ]
     session.close()
+    logger.log(logging.INFO, result)
     return result, 200
 
 # view course info
@@ -41,4 +48,5 @@ def course(course_id):
             courses.major_id
         ]
     session.close()
+    logger.log(logging.INFO, result)
     return result, 200
