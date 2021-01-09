@@ -44,11 +44,11 @@ def change_password(user_id):
 # TODO: add registration code support
 @auth_api.route('/register', methods = ['POST'])
 def register():
+    logger.log(logging.INFO, request.form)
     session = Session()
     session.add(
         Auth(email = request.form['email'], 
         password = request.form['password']))
     session.commit()
     session.close()
-    logger.log(logging.INFO, '{} {}', request.form['email'], request.form['password'])
     return 'OK', 200
