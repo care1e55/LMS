@@ -10,6 +10,7 @@ REST API реализовано на flask. В качестве ORM выбран
 DDL для создания сущностей приведено в init.sql. В качестве идентификаторов используется uuid4, который генерируется автоматичеки, если не задан. Сущности связаны через primary key -> foreign key constraint.
 
 TODO:
+ - [ ] fix (some) linting errors
  - [x] Docker compose
  - [ ] Дореализовать функционал по спецификации
  - [ ] Logging, sessions, cookies

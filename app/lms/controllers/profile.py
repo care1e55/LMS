@@ -2,16 +2,23 @@ from flask import Blueprint, request
 from lms.model.user_profile import UserProfile
 from lms.model.students import Students 
 from lms.model.auth import Auth
+import logging
 
 from . import Session
 
 profile_api = Blueprint('profile_api', __name__)
+
+logging.basicConfig(
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+    level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 # profile change
 # TODO: add education base visibility support
 # TODO: PUT
 @profile_api.route('/profile/<user_id>', methods = ['GET', 'POST', 'PUT'])
 def profile(user_id):
+    logger.log(logging.INFO, request.form)
     session = Session()
     if request.method == 'GET':
         result_set = session.query(UserProfile, Students, Auth) \
@@ -54,6 +61,7 @@ def profile(user_id):
                 students.education_form
             ]
         session.close()
+        logger.log(logging.INFO, result)
         return result, 200
     elif request.method == 'POST':
         session.add(UserProfile(
