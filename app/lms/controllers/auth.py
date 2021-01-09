@@ -50,5 +50,5 @@ def register():
         password = request.form['password']))
     session.commit()
     session.close()
-    logger.log(logging.INFO, f'{} {}', request.form['email'], request.form['password'])
+    logger.log(logging.INFO, '{} {}', request.form['email'], request.form['password'])
     return 'OK', 200
