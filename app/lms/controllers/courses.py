@@ -25,11 +25,11 @@ def before_request():
 
 # view user courses
 # TODO: teacher/student courses diference
-@courses_api.route('/courses/<user_id>', methods = ['GET'])
-def courses(user_id):
+@courses_api.route('/courses', methods = ['GET'])
+def courses():
     session = Session()
     group_id_result = session.query(Students) \
-        .filter(Students.user_id == user_id) \
+        .filter(Students.user_id == str(g.user.user_id)) \
         .all()[0].group_id
     result_set = session.query(Courses) \
         .filter(Courses.group_id == group_id_result) \

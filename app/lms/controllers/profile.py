@@ -1,4 +1,4 @@
-from flask import Blueprint, request, redirect, url_for, g
+from flask import Blueprint, request, redirect, url_for, g, make_response
 from lms.model.user_profile import UserProfile
 from lms.model.students import Students 
 from lms.model.auth import Auth
@@ -39,38 +39,38 @@ def profile(user_id):
             .all()
         result = {}
         # TODO: fix
-        # print(result_set)
-        # if request.cookies.get('current_user_id') == str(result_set['auth'].user_id):
-        #     for user_profile, students, auth in result_set:
-        #         result[str(auth.user_id)] = [
-        #             students.first_name,
-        #             students.middle_name,
-        #             students.last_name,
-        #             user_profile.email,
-        #             user_profile.phone_number,
-        #             user_profile.city,
-        #             user_profile.about,
-        #             user_profile.vk_link,
-        #             user_profile.facebook_link,
-        #             user_profile.instagram_link,
-        #             students.education_form,
-        #             students.education_base,
-        #         ]
-        # else:
-        for user_profile, students, auth in result_set:
-            result[str(auth.user_id)] = [
-                students.first_name,
-                students.middle_name,
-                students.last_name,
-                user_profile.email,
-                user_profile.phone_number,
-                user_profile.city,
-                user_profile.about,
-                user_profile.vk_link,
-                user_profile.facebook_link,
-                user_profile.instagram_link,
-                students.education_form
-            ]
+        print(result_set)
+        if str(g.user.user_id) == str(result_set['auth'].user_id):
+            for user_profile, students, auth in result_set:
+                result[str(auth.user_id)] = [
+                    students.first_name,
+                    students.middle_name,
+                    students.last_name,
+                    user_profile.email,
+                    user_profile.phone_number,
+                    user_profile.city,
+                    user_profile.about,
+                    user_profile.vk_link,
+                    user_profile.facebook_link,
+                    user_profile.instagram_link,
+                    students.education_form,
+                    students.education_base,
+                ]
+        else:
+            for user_profile, students, auth in result_set:
+                result[str(auth.user_id)] = [
+                    students.first_name,
+                    students.middle_name,
+                    students.last_name,
+                    user_profile.email,
+                    user_profile.phone_number,
+                    user_profile.city,
+                    user_profile.about,
+                    user_profile.vk_link,
+                    user_profile.facebook_link,
+                    user_profile.instagram_link,
+                    students.education_form
+                ]
         session.close()
         logger.log(logging.INFO, result)
         return result, 200
@@ -83,9 +83,8 @@ def profile(user_id):
         session.close()
         return 'OK', 200
 
-# TODO: fix
-# # view self profile
-# @profile_api.route('/profile', methods = ['GET', 'POST', 'PUT'])
-# def profile(user_id):
-#     cur_user_id = request.cookies.get('cur_user_id')
-#     return make_response(redirect(f"/profile/<{cur_user_id}>")), 200
+# view self profile
+@profile_api.route('/profile', methods = ['GET'])
+def self_profile():
+    logger.log(logging.INFO, str(g.user.user_id))
+    return redirect(f'/profile/{str(g.user.user_id)}')

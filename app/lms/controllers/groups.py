@@ -24,11 +24,11 @@ def before_request():
 
 # users in group
 # TODO: self group by user_id?
-@groups_api.route('/groups/<user_id>', methods = ['GET'])
-def groups(user_id):
+@groups_api.route('/groups', methods = ['GET'])
+def groups():
     session = Session()
     group_id_result = session.query(Students) \
-        .filter(Students.user_id == user_id) \
+        .filter(Students.user_id == str(g.user.user_id)) \
         .all()[0].group_id
     result_set = session.query(Students) \
         .filter(Students.group_id == group_id_result) \
