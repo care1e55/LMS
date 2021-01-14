@@ -1,5 +1,6 @@
-from flask import Blueprint, request
+from flask import Blueprint, request, redirect, url_for, g
 from lms.model.homeworks import Homeworks
+from lms.model.auth import Auth 
 import logging
 
 from . import Session
@@ -10,6 +11,15 @@ logging.basicConfig(
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
     level=logging.INFO)
 logger = logging.getLogger(__name__)
+
+@homework_api.before_request
+def before_request():
+    g.token = request.cookies.get('token')
+    user_id = Auth.verify_auth_token(str(g.token))
+    session = Session()
+    g.user = session.query(Auth).filter_by(user_id=user_id).first()
+    if g.user is None:
+        redirect(url_for('/')) 
 
 # add new homework to course
 @homework_api.route('/homework', methods = ['POST'])
