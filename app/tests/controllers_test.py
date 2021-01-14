@@ -1,8 +1,9 @@
 import unittest
 from lms import app
+from requests.auth import _basic_auth_str
 import os
 import json
-
+from base64 import b64encode
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
@@ -19,7 +20,9 @@ class TestControllers(unittest.TestCase):
         cls.db_string = f'postgresql://{schema}:{password}@{host}:{port}/{schema}'
         cls.engine = create_engine(cls.db_string).execution_options(isolation_level="AUTOCOMMIT")
         cls.Session = sessionmaker(bind = cls.engine)
-        cls.token = json.dumps(app.test_client().get('/get_auth_token').data)['token']
+        cls.user_id = "00000000-0000-0000-0000-000000000001"
+        res = app.test_client().get("/get-auth-token", headers={"Authorization":_basic_auth_str("00000000-0000-0000-0000-000000000001", "student1")})
+        cls.token = json.loads(res.data.decode('ascii'))['token']
         cls.user_id = "00000000-0000-0000-0000-000000000001"
         
     @classmethod

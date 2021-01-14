@@ -1,4 +1,4 @@
-from flask import Blueprint, request, redirect, url_for, g
+from flask import Blueprint, request, redirect, url_for, g, make_response
 from lms.model.user_profile import UserProfile
 from lms.model.students import Students 
 from lms.model.auth import Auth
@@ -83,9 +83,8 @@ def profile(user_id):
         session.close()
         return 'OK', 200
 
-# TODO: fix
+# # TODO: fix
 # # view self profile
-# @profile_api.route('/profile', methods = ['GET', 'POST', 'PUT'])
-# def profile(user_id):
-#     cur_user_id = request.cookies.get('cur_user_id')
-#     return make_response(redirect(f"/profile/<{cur_user_id}>")), 200
+# @profile_api.route('/profile/', methods = ['GET'])
+# def profile():
+#     return url_for(redirect(f'/profile/{g.user}'))
