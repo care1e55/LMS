@@ -53,7 +53,7 @@ class TestControllers(unittest.TestCase):
         with app.test_client() as client:
             client.set_cookie('localhost', 'token', self.token)
             client.set_cookie('localhost', 'user_id', self.user_id)
-            result = client.get('/groups/00000000-0000-0000-0000-000000000001')
+            result = client.get('/groups')
             self.assertEqual(
                 result.data,
                 b'{"00000000-0000-0000-0000-000000000001":["student1_first_name","student1_middle_name","student1_last_name"],"00000000-0000-0000-0000-000000000002":["student2_first_name","student2_middle_name","student2_last_name"]}\n'
@@ -63,7 +63,7 @@ class TestControllers(unittest.TestCase):
         with app.test_client() as client:
             client.set_cookie('localhost', 'token', self.token)
             client.set_cookie('localhost', 'user_id', self.user_id)
-            result = client.get('/courses/00000000-0000-0000-0000-000000000001')
+            result = client.get('/courses')
             self.assertEqual(
                 result.data,
                 b'{"course_name_1":["description"]}\n'

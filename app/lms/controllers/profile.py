@@ -38,39 +38,39 @@ def profile(user_id):
             .join(Auth, UserProfile.user_id == Auth.user_id) \
             .all()
         result = {}
-        # TODO: fix
-        print(result_set)
-        if str(g.user.user_id) == str(result_set['auth'].user_id):
-            for user_profile, students, auth in result_set:
-                result[str(auth.user_id)] = [
-                    students.first_name,
-                    students.middle_name,
-                    students.last_name,
-                    user_profile.email,
-                    user_profile.phone_number,
-                    user_profile.city,
-                    user_profile.about,
-                    user_profile.vk_link,
-                    user_profile.facebook_link,
-                    user_profile.instagram_link,
-                    students.education_form,
-                    students.education_base,
-                ]
-        else:
-            for user_profile, students, auth in result_set:
-                result[str(auth.user_id)] = [
-                    students.first_name,
-                    students.middle_name,
-                    students.last_name,
-                    user_profile.email,
-                    user_profile.phone_number,
-                    user_profile.city,
-                    user_profile.about,
-                    user_profile.vk_link,
-                    user_profile.facebook_link,
-                    user_profile.instagram_link,
-                    students.education_form
-                ]
+        # # TODO: fix
+        # print(result_set)
+        # if str(g.user.user_id) == str(result_set['auth'].user_id):
+        #     for user_profile, students, auth in result_set:
+        #         result[str(auth.user_id)] = [
+        #             students.first_name,
+        #             students.middle_name,
+        #             students.last_name,
+        #             user_profile.email,
+        #             user_profile.phone_number,
+        #             user_profile.city,
+        #             user_profile.about,
+        #             user_profile.vk_link,
+        #             user_profile.facebook_link,
+        #             user_profile.instagram_link,
+        #             students.education_form,
+        #             students.education_base,
+        #         ]
+        # else:
+        for user_profile, students, auth in result_set:
+            result[str(auth.user_id)] = [
+                students.first_name,
+                students.middle_name,
+                students.last_name,
+                user_profile.email,
+                user_profile.phone_number,
+                user_profile.city,
+                user_profile.about,
+                user_profile.vk_link,
+                user_profile.facebook_link,
+                user_profile.instagram_link,
+                students.education_form
+            ]
         session.close()
         logger.log(logging.INFO, result)
         return result, 200
