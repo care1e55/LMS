@@ -91,7 +91,6 @@ def before_request():
     if g.user is None:
         redirect(url_for('/')) 
 
-
 @auth_password.error_handler
 def unauthorized():
     response = jsonify({'status': 401, 'error': 'unauthorized',
@@ -106,4 +105,3 @@ def get_auth_token():
     response = make_response(jsonify({'token': g.user.generate_auth_token()}))
     response.set_cookie('token', g.user.generate_auth_token())
     return response, 200
-
