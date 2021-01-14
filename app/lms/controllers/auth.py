@@ -1,13 +1,14 @@
-from flask import Blueprint, request, make_response, g, jsonify
-from flask_httpauth import HTTPBasicAuth, HTTPTokenAuth
+from flask import Blueprint, request, make_response, g, jsonify,redirect, url_for
+from flask_httpauth import HTTPBasicAuth, HTTPDigestAuth
 from lms.model.auth import Auth 
 import logging
 
 from . import Session
 
 auth_api = Blueprint('auth_api', __name__)
+auth_get = Blueprint('auth_get', __name__)
 auth_password = HTTPBasicAuth()
-auth_token = HTTPBasicAuth()
+auth_token = HTTPDigestAuth()
 
 logging.basicConfig(
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
@@ -34,6 +35,7 @@ def auth():
         return 'Bad credentials', 400
 
 @auth_api.route('/password/<user_id>', methods = ['POST'])
+@auth_token.login_required
 def change_password(user_id):
     session = Session()
     user_creds = session.query(Auth) \
@@ -60,6 +62,10 @@ def register():
     session.close()
     return 'OK', 200
 
+@auth_api.route('/test', methods = ['GET'])
+def test():
+    response = make_response(str(g.token))
+    return response
 
 @auth_password.verify_password
 def verify_password(user_id, password):
@@ -69,10 +75,21 @@ def verify_password(user_id, password):
         return False
     return g.user.verify_password(password)
 
-@auth_token.verify_password
-def verify_auth_token(token, unused):
-    g.user = Auth.verify_auth_token(token)
-    return g.user is not None
+# @auth_token.verify_password
+# def verify_auth_token(token, unused):
+
+#     g.user = Auth.verify_auth_token(token)
+#     return g.user is not None
+
+@auth_api.before_request
+def before_request():
+    g.token = request.cookies.get('token')
+    user_id = Auth.verify_auth_token(str(g.token))
+    session = Session()
+    g.user = session.query(Auth).filter_by(user_id=user_id).first()
+    if g.user is None:
+        redirect(url_for('/')) 
+
 
 @auth_password.error_handler
 def unauthorized():
@@ -81,15 +98,8 @@ def unauthorized():
     response.status_code = 401
     return response
 
-@auth_token.error_handler
-def unauthorized_token():
-    response = jsonify({'status': 401, 'error': 'unauthorized',
-                        'message': 'please send your authentication token'})
-    response.status_code = 401
-    return response
-
 # authentication token route
-@auth_api.route('/get-auth-token')
+@auth_get.route('/get-auth-token')
 @auth_password.login_required
 def get_auth_token():
     response = make_response(jsonify({'token': g.user.generate_auth_token()}))

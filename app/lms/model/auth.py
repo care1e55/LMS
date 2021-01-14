@@ -39,4 +39,4 @@ class Auth(Base):
             data = s.loads(token)
         except:
             return None
-        return Auth.query.get(data['user_id'])
+        return data['user_id']
