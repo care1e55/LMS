@@ -32,9 +32,11 @@ before_script:
 
 script:
   - sleep 10
-  - cd app && coverage run -m unittest discover -v && cd ..
+  # - cd app && coverage run -m unittest discover -v && cd ..
   - docker-compose push
   - sshpass -p "$SERVICE_PASSWORD" scp docker-compose.yml $SERVICE_LOGIN@$SERVICE_HOST:/root/
+  - sshpass -p "$SERVICE_PASSWORD" ssh $SERVICE_LOGIN@$SERVICE_HOST docker rm -f lms-app lms-db
+  - sshpass -p "$SERVICE_PASSWORD" ssh $SERVICE_LOGIN@$SERVICE_HOST docker rmi -f care1e55/lms-app care1e55/lms-db
   - sshpass -p "$SERVICE_PASSWORD" ssh $SERVICE_LOGIN@$SERVICE_HOST docker-compose pull
   - sshpass -p "$SERVICE_PASSWORD" ssh $SERVICE_LOGIN@$SERVICE_HOST docker-compose up -d 
 

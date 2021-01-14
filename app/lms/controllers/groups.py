@@ -1,5 +1,6 @@
-from flask import Blueprint
+from flask import Blueprint, request, redirect, url_for, g
 from lms.model.students import Students
+from lms.model.auth import Auth 
 import logging
 
 from . import Session
@@ -10,6 +11,16 @@ logging.basicConfig(
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
     level=logging.INFO)
 logger = logging.getLogger(__name__)
+
+@groups_api.before_request
+def before_request():
+    g.token = request.cookies.get('token')
+    user_id = Auth.verify_auth_token(str(g.token))
+    session = Session()
+    g.user = session.query(Auth).filter_by(user_id=user_id).first()
+    session.close()
+    if g.user is None:
+        redirect(url_for('/')) 
 
 # users in group
 # TODO: self group by user_id?

@@ -1,6 +1,7 @@
 import unittest
 from lms import app
 import os
+import json
 
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
@@ -18,6 +19,8 @@ class TestControllers(unittest.TestCase):
         cls.db_string = f'postgresql://{schema}:{password}@{host}:{port}/{schema}'
         cls.engine = create_engine(cls.db_string).execution_options(isolation_level="AUTOCOMMIT")
         cls.Session = sessionmaker(bind = cls.engine)
+        cls.token = json.dumps(app.test_client().get('/get_auth_token').data)['token']
+        cls.user_id = "00000000-0000-0000-0000-000000000001"
         
     @classmethod
     def tearDownClass(cls):
@@ -35,6 +38,8 @@ class TestControllers(unittest.TestCase):
 
     def test_get_profile(self):
         with app.test_client() as client:
+            client.set_cookie('localhost', 'token', self.token)
+            client.set_cookie('localhost', 'user_id', self.user_id)
             result = client.get('/profile/00000000-0000-0000-0000-000000000001')
             self.assertEqual(
                 result.data,
@@ -43,6 +48,8 @@ class TestControllers(unittest.TestCase):
 
     def test_get_group(self):
         with app.test_client() as client:
+            client.set_cookie('localhost', 'token', self.token)
+            client.set_cookie('localhost', 'user_id', self.user_id)
             result = client.get('/groups/00000000-0000-0000-0000-000000000001')
             self.assertEqual(
                 result.data,
@@ -51,6 +58,8 @@ class TestControllers(unittest.TestCase):
 
     def test_get_courses(self):
         with app.test_client() as client:
+            client.set_cookie('localhost', 'token', self.token)
+            client.set_cookie('localhost', 'user_id', self.user_id)
             result = client.get('/courses/00000000-0000-0000-0000-000000000001')
             self.assertEqual(
                 result.data,
@@ -59,6 +68,8 @@ class TestControllers(unittest.TestCase):
 
     def test_get_course_info(self):
         with app.test_client() as client:
+            client.set_cookie('localhost', 'token', self.token)
+            client.set_cookie('localhost', 'user_id', self.user_id)
             result = client.get('/course/00000000-0000-0000-0004-000000000001')
             self.assertEqual(
                 result.data,
@@ -67,6 +78,8 @@ class TestControllers(unittest.TestCase):
 
     def test_get_solutions(self):
         with app.test_client() as client:
+            client.set_cookie('localhost', 'token', self.token)
+            client.set_cookie('localhost', 'user_id', self.user_id)
             result = client.get('/solutions/00000000-0000-0000-0004-000000000001')
             self.assertEqual(
                 result.data,
@@ -75,6 +88,8 @@ class TestControllers(unittest.TestCase):
 
     def test_register(self):
         with app.test_client() as client:
+            client.set_cookie('localhost', 'token', self.token)
+            client.set_cookie('localhost', 'user_id', self.user_id)
             post_data = {'registration_code': 'code1'}
             result = client.post('/register', data = post_data)
             self.assertEqual(
@@ -84,6 +99,8 @@ class TestControllers(unittest.TestCase):
 
     def test_auth(self):
         with app.test_client() as client:
+            client.set_cookie('localhost', 'token', self.token)
+            client.set_cookie('localhost', 'user_id', self.user_id)
             post_data = {'email': 'student1@example.com', 'password': 'student1'}
             result = client.post('/auth', data = post_data)
             self.assertEqual(
@@ -93,6 +110,8 @@ class TestControllers(unittest.TestCase):
 
     def test_post_profile(self):
         with app.test_client() as client:
+            client.set_cookie('localhost', 'token', self.token)
+            client.set_cookie('localhost', 'user_id', self.user_id)
             post_data = {
                 'email': 'student1@example.com',
                 'phone_number': '+79001112233',
@@ -110,6 +129,8 @@ class TestControllers(unittest.TestCase):
 
     def test_post_material(self):
         with app.test_client() as client:
+            client.set_cookie('localhost', 'token', self.token)
+            client.set_cookie('localhost', 'user_id', self.user_id)
             post_data = {
                 'material_name': 'material2_name', 
                 'material_content': 'material2_name', 
@@ -124,6 +145,8 @@ class TestControllers(unittest.TestCase):
     
     def test_post_homework(self):
         with app.test_client() as client:
+            client.set_cookie('localhost', 'token', self.token)
+            client.set_cookie('localhost', 'user_id', self.user_id)
             post_data = { 
                 'homeworks_name': 'homework9', 
                 'homework_start_date': '19.12.2020', 
@@ -139,6 +162,8 @@ class TestControllers(unittest.TestCase):
 
     def test_post_solution(self):
         with app.test_client() as client:
+            client.set_cookie('localhost', 'token', self.token)
+            client.set_cookie('localhost', 'user_id', self.user_id)
             post_data = { 
                 'homework_id': '00000000-0000-0000-0005-000000000001',
                 'student_id': '00000000-0000-0000-0001-000000000001',
