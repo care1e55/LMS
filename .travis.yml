@@ -19,10 +19,8 @@ before_install:
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
 
 install:
+  - pip install -r app/requirements.txt
   - pip install coverage
-  - pip install Flask
-  - pip install SQLAlchemy
-  - pip install psycopg2
   - pip install pylint
 
 
