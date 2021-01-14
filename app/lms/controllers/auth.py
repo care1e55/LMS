@@ -46,9 +46,12 @@ def change_password(user_id):
 def register():
     logger.log(logging.INFO, request.form)
     session = Session()
-    session.add(
-        Auth(email = request.form['email'], 
-        password = request.form['password']))
-    session.commit()
+    user_creds = session.query(Auth).filter(
+        Auth.registration_code == request.form['registration_code']) 
+    if session.query(user_creds.exists()).scalar():
+        session.query(Auth) \
+            .filter(Auth.user_id == str(user_creds.all()[0].user_id)) \
+            .update({"is_active" : True})
+        session.commit()
     session.close()
     return 'OK', 200

@@ -5,6 +5,18 @@
 
 Проект с сервисом LMS по [заданию](https://gist.github.com/Invizory/c02fdadfbe4a33f00b10b50b20142587)
 
+
+Локально решение поднимается как docker-compose с парметрами подключения к БД. Все парметры кроме `POSTGRES_PASSWORD` могут быть выставлены по умолчанию. Требуется версия docker-compose 1.27:
+```bash
+docker-compose build --build-arg POSTGRES_PASSWORD="$POSTGRES_PASSWORD"
+docker-compose up -d
+```
+
+Тесты запускаются при поднятом приложении:
+```bash
+python -m unittest -v app/tests/controllers_test.py 
+```
+
 REST API реализовано на flask. В качестве ORM выбрано SQL Alchemy.
 
 Решение представлено в виде docker-compose - имейджи приложения собираются на Travis 

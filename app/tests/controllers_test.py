@@ -75,7 +75,7 @@ class TestControllers(unittest.TestCase):
 
     def test_register(self):
         with app.test_client() as client:
-            post_data = {'email': 'test_user@example.com', 'password': 'test_user'}
+            post_data = {'registration_code': 'code1'}
             result = client.post('/register', data = post_data)
             self.assertEqual(
                 result.data,

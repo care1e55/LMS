@@ -7,7 +7,10 @@ CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 create table if not exists auth(
 	user_id UUID primary key DEFAULT uuid_generate_v1(),
 	email varchar UNIQUE,
-	password varchar UNIQUE
+	password varchar UNIQUE,
+	"role" varchar,
+	registration_code varchar,
+	is_active bool
 );
 
 create table if not exists students(
@@ -101,28 +104,40 @@ INSERT INTO public.groups(group_id, group_name, description ) VALUES(
 	'group of students'
 );
 
-INSERT INTO public.auth(user_id, email, "password") VALUES(
+INSERT INTO public.auth(user_id, email, "password", "role", registration_code, is_active) VALUES(
 	'00000000-0000-0000-0000-000000000001', 
 	'student1@example.com', 
-	'student1'
+	'student1',
+	'student',
+	'code1',
+	false
 );
 
-INSERT INTO public.auth(user_id, email, "password") VALUES(
+INSERT INTO public.auth(user_id, email, "password", "role", registration_code, is_active) VALUES(
 	'00000000-0000-0000-0000-000000000002', 
 	'student2@example.com', 
-	'student2'
+	'student2',
+	'student',
+	'code2',
+	false
 );
 
-INSERT INTO public.auth(user_id, email, "password") VALUES(
+INSERT INTO public.auth(user_id, email, "password", "role", registration_code, is_active) VALUES(
 	'00000000-0000-0000-0000-000000000003', 
 	'student3@example.com', 
-	'student3'
+	'student3',
+	'student',
+	'code3',
+	false
 );
 
-INSERT INTO public.auth(user_id, email, "password") VALUES(
+INSERT INTO public.auth(user_id, email, "password", "role", registration_code, is_active) VALUES(
 	'00000000-0000-0000-0000-000000000004', 
 	'teacher1@example.com', 
-	'teacher1'
+	'teacher1',
+	'teacher',
+	'code4',
+	false
 );
 
 INSERT INTO public.students(
