@@ -6,6 +6,7 @@ ARG POSTGRES_PASSWORD
 RUN pip install Flask
 RUN pip install SQLAlchemy
 RUN pip install psycopg2
+RUN pip install flask-httpauth
 RUN mkdir /usr/local/app
 COPY . /usr/local/app
 WORKDIR /usr/local/app
