@@ -20,6 +20,7 @@ def before_request():
     user_id = Auth.verify_auth_token(str(g.token))
     session = Session()
     g.user = session.query(Auth).filter_by(user_id=user_id).first()
+    session.close()
     if g.user is None:
         redirect(url_for('/')) 
 
