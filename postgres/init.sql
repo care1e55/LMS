@@ -89,28 +89,41 @@ create table if not exists solutions(
 
 --########FILL TEST DATA########
 
+INSERT INTO public.groups(group_id, group_name, description ) VALUES(
+	'1', 
+	'GR1', 
+	'group of students'
+);
+
+INSERT INTO public.groups(group_id, group_name, description ) VALUES(
+	'2', 
+	'GR2', 
+	'group of students'
+);
 
 INSERT INTO public.auth(user_id, email, "password") VALUES(
 	'00000000-0000-0000-0000-000000000001', 
 	'student1@example.com', 
 	'student1'
 );
+
 INSERT INTO public.auth(user_id, email, "password") VALUES(
 	'00000000-0000-0000-0000-000000000002', 
 	'student2@example.com', 
 	'student2'
 );
+
 INSERT INTO public.auth(user_id, email, "password") VALUES(
 	'00000000-0000-0000-0000-000000000003', 
 	'student3@example.com', 
 	'student3'
 );
+
 INSERT INTO public.auth(user_id, email, "password") VALUES(
 	'00000000-0000-0000-0000-000000000004', 
 	'teacher1@example.com', 
 	'teacher1'
 );
-
 
 INSERT INTO public.students(
 	student_id, 
