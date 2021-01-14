@@ -83,8 +83,9 @@ def profile(user_id):
         session.close()
         return 'OK', 200
 
-# # TODO: fix
-# # view self profile
-# @profile_api.route('/profile/', methods = ['GET'])
-# def profile():
-#     return url_for(redirect(f'/profile/{g.user}'))
+# TODO: fix
+# view self profile
+@profile_api.route('/profile', methods = ['GET'])
+def self_profile():
+    logger.log(logging.INFO, str(g.user.user_id))
+    return redirect(f'/profile/{str(g.user.user_id)}')

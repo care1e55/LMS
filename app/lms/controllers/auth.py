@@ -106,3 +106,4 @@ def get_auth_token():
     response = make_response(jsonify({'token': g.user.generate_auth_token()}))
     response.set_cookie('token', g.user.generate_auth_token())
     return response, 200
+
