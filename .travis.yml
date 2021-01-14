@@ -27,6 +27,8 @@ install:
 
 
 before_script:
+  - docker-compose rm -f lms-app lms-db
+  - docker-compose rmi -f care1e55/lms-app care1e55/lms-db
   - docker-compose build --build-arg POSTGRES_PASSWORD="$POSTGRES_PASSWORD"
   - docker-compose up -d
 
