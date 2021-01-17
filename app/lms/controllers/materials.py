@@ -15,9 +15,9 @@ logger = logging.getLogger(__name__)
 @material_api.before_request
 def before_request():
     g.token = request.cookies.get('token')
-    user_id = Auth.verify_auth_token(str(g.token))
+    email = Auth.verify_auth_token(str(g.token))
     session = Session()
-    g.user = session.query(Auth).filter_by(user_id=user_id).first()
+    g.user = session.query(Auth).filter_by(email=email).first()
     session.close()
     if g.user is None:
         redirect(url_for('/')) 

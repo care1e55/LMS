@@ -6,13 +6,9 @@
 Проект с сервисом LMS по [заданию](https://gist.github.com/Invizory/c02fdadfbe4a33f00b10b50b20142587)
 
 
-Локально решение поднимается как docker-compose с парметрами подключения к БД. Все парметры кроме `POSTGRES_PASSWORD` могут быть выставлены по умолчанию. Требуется версия docker-compose 1.27:
-```bash
-docker-compose build --build-arg POSTGRES_PASSWORD="$POSTGRES_PASSWORD"
-docker-compose up -d
-```
 
-Тесты запускаются при поднятом приложении. Предварительно необходимо чтобы в среде присутсвовали переменные окуржения для подключения в БД:
+Локально решение поднимается как docker-compose с парметрами подключения к БД. Все парметры кроме `POSTGRES_PASSWORD` могут быть выставлены по умолчанию. Требуется версия docker-compose 1.27.
+Предварительно необходимо чтобы в среде присутсвовали переменные окуржения для подключения в БД:
 ```bash
 export POSTGRES_HOST=localhost
 export POSTGRES_PORT=5432
@@ -20,6 +16,12 @@ export POSTGRES_SCHEMA=postgres
 export POSTGRES_PASSWORD=<password here>
 ```
 
+```bash
+docker-compose build --build-arg POSTGRES_PASSWORD="$POSTGRES_PASSWORD"
+docker-compose up -d
+```
+
+Тесты запускаются при поднятом приложении из директории с проектом:
 ```bash
 python -m unittest -v app/tests/controllers_test.py 
 ```
@@ -31,19 +33,24 @@ REST API реализовано на flask. В качестве ORM выбран
 
 Сервис деплоится на Digital Ocean и доступен по адресу **http://188.166.116.10:500**, например получиться информацию по профилю сутдента:
 
-Аутентификация по логину и паролю и получениее cookie с токеном
+Для использования сервиса предварительно необходимо активировать аккаунт по регистрационному, email и паролю в POST запросе:
 ```bash
-http --auth 00000000-0000-0000-0000-000000000001:student1 http://188.166.116.10:5000/get-auth-token
+http -f POST http://188.166.116.10:5000/register registration_code=code1 email=student1@example.com  password=student1
+```
+
+После регистрации аутентификация по логину и паролю и получениее cookie с токеном
+```bash
+http --auth student1@example.com:student1 http://188.166.116.10:5000/get-auth-token
 ```
 
 При тестировании через CLI cookie понадобится подставлять ко всем запроса вручную. Также не будет работать редирект. Например, посмотреть собственный профиль:
 ```bash
-http http://188.166.116.10:5000/profile 'Cookie:token=eyJhbGciOiJIUzUxMiIsImlhdCI6MTYxMDc5NTE4NywiZXhwIjoxNjEwNzk4Nzg3fQ.eyJ1c2VyX2lkIjoiMDAwMDAwMDAtMDAwMC0wMDAwLTAwMDAtMDAwMDAwMDAwMDAxIn0.C8D6tSjHxxuHt__6Xj9CbeSpCC490xE2hsHwN1QO5ug9fc2TgmsE1jpQGxTVF8Uh_X7IV9nhoAC4L1U_d6hwTw'
+http http://188.166.116.10:5000/profile 'Cookie:token=<token>'
 ```
 
 Редиректит на аналогичный эндпоинт:
 ```bash
-http http://188.166.116.10:5000/profile/00000000-0000-0000-0000-000000000001 'Cookie:token=eyJhbGciOiJIUzUxMiIsImlhdCI6MTYxMDc5NTE4NywiZXhwIjoxNjEwNzk4Nzg3fQ.eyJ1c2VyX2lkIjoiMDAwMDAwMDAtMDAwMC0wMDAwLTAwMDAtMDAwMDAwMDAwMDAxIn0.C8D6tSjHxxuHt__6Xj9CbeSpCC490xE2hsHwN1QO5ug9fc2TgmsE1jpQGxTVF8Uh_X7IV9nhoAC4L1U_d6hwTw'
+http http://188.166.116.10:5000/profile/00000000-0000-0000-0000-000000000001 'Cookie:token=<token>'
 ```
 
 DDL для создания сущностей и наполнение тестовыми данными приведено в `init.sql` котрый запускается в entrypoin 

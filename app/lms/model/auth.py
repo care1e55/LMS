@@ -30,7 +30,7 @@ class Auth(Base):
 
     def generate_auth_token(self, expires_in=3600):
         s = Serializer(os.environ.get('SECRET_KEY', 'default'), expires_in=expires_in)
-        return s.dumps({'user_id': str(self.user_id)}).decode('utf-8')
+        return s.dumps({'email': str(self.email)}).decode('utf-8')
 
     @staticmethod
     def verify_auth_token(token):
@@ -39,4 +39,4 @@ class Auth(Base):
             data = s.loads(token)
         except:
             return None
-        return data['user_id']
+        return data['email']

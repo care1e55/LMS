@@ -17,9 +17,9 @@ logger = logging.getLogger(__name__)
 def before_request():
     print("BEFORE REQUEST")
     g.token = request.cookies.get('token')
-    user_id = Auth.verify_auth_token(str(g.token))
+    email = Auth.verify_auth_token(str(g.token))
     session = Session()
-    g.user = session.query(Auth).filter_by(user_id=user_id).first()
+    g.user = session.query(Auth).filter_by(email=email).first()
     session.close()
     if g.user is None:
         redirect(url_for('/')) 
@@ -77,7 +77,7 @@ def profile(user_id):
     elif request.method == 'POST':
         session.add(UserProfile(
             **request.form,
-            user_id = user_id
+            user_id = g.user.user_id
             ).validate())
         session.commit()
         session.close()
@@ -88,3 +88,15 @@ def profile(user_id):
 def self_profile():
     logger.log(logging.INFO, str(g.user.user_id))
     return redirect(f'/profile/{str(g.user.user_id)}')
+
+# cahnge password
+@profile_api.route('/password', methods = ['POST'])
+def change_password():
+    session = Session()
+    user_creds = session.query(Auth) \
+        .filter(Auth.email == request.form['email']) \
+        .update({"password" : request.form['password']})
+    session.commit()
+    session.close()
+    logger.log(logging.INFO, user_creds)
+    return 'OK', 200
