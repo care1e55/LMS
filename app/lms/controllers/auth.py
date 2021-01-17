@@ -67,16 +67,3 @@ def unauthorized():
                         'message': 'please authenticate'})
     response.status_code = 401
     return response
-
-# @auth_token.route('/')
-# def unauthorized_token():
-#     response = jsonify({'status': 401, 'error': 'unauthorized',
-#                         'message': 'please authenticate'})
-#     response.status_code = 401
-#     return response
-
-# @auth_token.verify_password
-# def verify_auth_token(token, unused):
-
-#     g.user = Auth.verify_auth_token(token)
-#     return g.user is not None
