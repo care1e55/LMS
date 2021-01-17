@@ -29,7 +29,7 @@ python -m unittest -v app/tests/controllers_test.py
 REST API реализовано на flask. В качестве ORM выбрано SQL Alchemy.
 
 Решение представлено в виде docker-compose - имейджи приложения собираются на Travis 
-и пушатся в публичный DockerHub: [LMS flask app](care1e55/lms-app), [postgres](care1e55/lms-db)
+и пушатся в публичный DockerHub: [LMS flask app](https://hub.docker.com/repository/docker/care1e55), [postgres](https://hub.docker.com/repository/docker/care1e55)
 
 Сервис деплоится на Digital Ocean и доступен по адресу **http://188.166.116.10:5000**, например получиться информацию по профилю сутдента:
 
