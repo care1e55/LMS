@@ -24,9 +24,9 @@ install:
   - pip install pylint
 
 
-before_script:
-  - docker-compose build --build-arg POSTGRES_PASSWORD="$POSTGRES_PASSWORD"
-  - docker-compose up -d
+#before_script:
+#  - docker-compose build --build-arg POSTGRES_PASSWORD="$POSTGRES_PASSWORD"
+#  - docker-compose up -d
 
 script:
   - sleep 10
@@ -39,6 +39,6 @@ script:
   - sshpass -p "$SERVICE_PASSWORD" ssh $SERVICE_LOGIN@$SERVICE_HOST docker-compose up -d 
 
 after_script:
-  - docker-compose down
+#  - docker-compose down
   - bash <(curl -s https://codecov.io/bash)
   - cd app && pylint lms || exit 0
